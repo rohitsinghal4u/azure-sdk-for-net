@@ -59,7 +59,8 @@ namespace Azure.Security.KeyVault.Secrets.Tests
         public void GetArgumentValidation()
         {
             Assert.ThrowsAsync<ArgumentNullException>(() => Client.GetSecretAsync(null));
-            Assert.ThrowsAsync<ArgumentException>(() => Client.GetSecretAsync(""));
+            ArgumentException ex = Assert.ThrowsAsync<ArgumentException>(() => Client.GetSecretAsync(""));
+            StringAssert.Contains("secret name", ex.Message);
         }
 
         [Test]
