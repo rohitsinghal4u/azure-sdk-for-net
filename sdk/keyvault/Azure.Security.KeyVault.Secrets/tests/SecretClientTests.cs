@@ -58,8 +58,11 @@ namespace Azure.Security.KeyVault.Secrets.Tests
         [Test]
         public void GetArgumentValidation()
         {
-            Assert.ThrowsAsync<ArgumentNullException>(() => Client.GetSecretAsync(null));
-            Assert.ThrowsAsync<ArgumentException>(() => Client.GetSecretAsync(""));
+            ArgumentNullException nullEx = Assert.ThrowsAsync<ArgumentNullException>(() => Client.GetSecretAsync(null));
+            Assert.AreEqual("name", nullEx.ParamName, "The exception should identify the 'name' parameter when the secret name is null.");
+
+            ArgumentException emptyEx = Assert.ThrowsAsync<ArgumentException>(() => Client.GetSecretAsync(""));
+            Assert.AreEqual("name", emptyEx.ParamName, "The exception should identify the 'name' parameter when the secret name is empty.");
         }
 
         [Test]
