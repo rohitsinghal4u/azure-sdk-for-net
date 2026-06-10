@@ -125,7 +125,11 @@ namespace Azure.Security.KeyVault.Secrets
         /// <exception cref="RequestFailedException">The server returned an error. See <see cref="Exception.Message"/> for details returned from the server.</exception>
         public virtual async Task<Response<KeyVaultSecret>> GetSecretAsync(string name, string version = null, SecretContentType? outContentType = null, CancellationToken cancellationToken = default)
         {
-            Argument.AssertNotNullOrEmpty(name, nameof(name));
+            Argument.AssertNotNull(name, nameof(name));
+            if (name.Length == 0)
+            {
+                throw new ArgumentException("Secret name cannot be an empty string.", nameof(name));
+            }
 
             using DiagnosticScope scope = _pipeline.CreateScope($"{nameof(SecretClient)}.{nameof(GetSecret)}");
             scope.AddAttribute(OTelSecretNameKey, name);
@@ -190,7 +194,11 @@ namespace Azure.Security.KeyVault.Secrets
         /// <exception cref="RequestFailedException">The server returned an error. See <see cref="Exception.Message"/> for details returned from the server.</exception>
         public virtual Response<KeyVaultSecret> GetSecret(string name, string version = null, SecretContentType? outContentType = null, CancellationToken cancellationToken = default)
         {
-            Argument.AssertNotNullOrEmpty(name, nameof(name));
+            Argument.AssertNotNull(name, nameof(name));
+            if (name.Length == 0)
+            {
+                throw new ArgumentException("Secret name cannot be an empty string.", nameof(name));
+            }
 
             using DiagnosticScope scope = _pipeline.CreateScope($"{nameof(SecretClient)}.{nameof(GetSecret)}");
             scope.AddAttribute(OTelSecretNameKey, name);
