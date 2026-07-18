@@ -101,9 +101,34 @@ For Key Vault, consult:
 
 ## Support Policy Expectation
 
-The Azure SDK support policy supports the latest package version. If the customer is not on the latest stable package version, make that clear and request reproduction on the latest version. You may still include likely mitigations or investigation notes, but do not assign Copilot solely to fix behavior reported only on an old version unless the issue is obviously present in current code.
+The Azure SDK support policy supports the latest package version. Version currency is a mandatory decision point, not just background guidance.
+
+When a package ID and customer-reported package version are available:
+1. Determine the latest stable version from NuGet package metadata or package release context.
+2. Compare the reported version to the latest stable version.
+3. If the reported version is older than the latest stable version, you MUST handle the issue using the Version Currency decision rule below before considering Copilot assignment.
+
+You may still include likely mitigations or investigation notes, but do not assign Copilot solely to fix behavior reported only on an old version unless the issue is obviously present in current code.
 
 ## Decision Rules
+
+Apply these decision rules in order. Stop at the first matching rule that produces a user-visible action or `noop`.
+
+### Version Currency / Support Policy
+
+If the customer reports an older package version than the latest stable version:
+
+1. Inspect the issue and repository context enough to determine whether the problem is obviously present in current code or current documentation.
+2. If it is NOT obviously present in current code/current documentation, add one comment that:
+   - States Azure SDK support applies to the latest package version.
+   - Names the reported package/version.
+   - Names the latest stable version, if known.
+   - Asks the customer to reproduce on the latest stable version and report back.
+   - Optionally includes likely mitigation or investigation notes.
+3. Do not assign Copilot.
+4. Do not continue to actionable-SDK handling.
+
+Only bypass this rule when the issue is clearly present in current code/current documentation despite the old reported version. If you bypass it, explain that in the actionable-SDK comment before assigning Copilot.
 
 ### Duplicate
 
